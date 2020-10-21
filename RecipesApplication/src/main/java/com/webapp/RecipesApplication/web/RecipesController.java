@@ -21,14 +21,14 @@ public class RecipesController {
 	
 	@GetMapping("/all-recipes")
 	public List<Recipe> getAllRecipes() throws IOException {
-		 return recipeService.ingestRecipesFile();
+		 return recipeService.getAllRecipes();
 		 
 		
 	}
 	
 	@GetMapping("/gluten-free")
 	public List<Recipe> getGlutenFreeRecipes() {
-		return recipeService.ingestRecipesFile()
+		return recipeService.getAllRecipes()
 				            .stream()
 				            .filter(recipe -> recipe.getGlutenFree().equals(true))
 				            .collect(Collectors.toList());
@@ -36,7 +36,7 @@ public class RecipesController {
 	
 	@GetMapping("/vegan")
 	public List<Recipe> getVeganRecipes() {
-		return recipeService.ingestRecipesFile()
+		return recipeService.getAllRecipes()
 	            .stream()
 	            .filter(recipe -> recipe.getVegan().equals(true))
 	            .collect(Collectors.toList());
@@ -44,7 +44,7 @@ public class RecipesController {
 	
 	@GetMapping("/vegan-and-gluten-free")
 	public List<Recipe> getVeganAndGlutenFreeRecipes() {
-		return recipeService.ingestRecipesFile()
+		return recipeService.getAllRecipes()
 	            .stream()
 	            .filter(recipe -> (recipe.getVegan().equals(true) &&  recipe.getGlutenFree().equals(true)))
 	            .collect(Collectors.toList());
@@ -52,7 +52,7 @@ public class RecipesController {
 	
 	@GetMapping("/vegetarian")
 	public List<Recipe> getVegetarianRecipes() {
-		return recipeService.ingestRecipesFile()
+		return recipeService.getAllRecipes()
 	            .stream()
 	            .filter(recipe -> recipe.getVegetarian().equals(true))
 	            .collect(Collectors.toList());

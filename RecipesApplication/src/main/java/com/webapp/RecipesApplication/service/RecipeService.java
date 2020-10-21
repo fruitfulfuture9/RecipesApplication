@@ -10,14 +10,19 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webapp.RecipesApplication.domain.Recipe;
+import com.webapp.RecipesApplication.repository.RecipeRepository;
 
 
 public class RecipeService {
 	
 	private String filename;
+	
+	@Autowired
+	private RecipeRepository recipeRepo;
 	
 	
 	public RecipeService(String filename) {
@@ -25,32 +30,19 @@ public class RecipeService {
 	}
 
 	
-	public List<Recipe> ingestRecipesFile(){
-		
-		 List<Recipe> recipes = new ArrayList<>();
-		
-		  Integer cookingMinutes;
-		  
-          Boolean dairyFree;
-
+	private List<Recipe> ingestRecipesFile(){		
+	
+	     Integer cookingMinutes;
+	     Boolean dairyFree;
 	     Boolean glutenFree;
-
 	     String instructions;
-
 	     Double preparationMinutes;
-
 	     Double pricePerServing;
-
 	     Integer readyInMinutes;
-
 	     Integer servings;
-
 	     Double spoonacularScore;
-
 	     String title;
-
 	     Boolean vegan;
-
 	     Boolean vegetarian;
 		
 		try {
@@ -83,7 +75,7 @@ public class RecipeService {
 			 preparationMinutes,  pricePerServing,  readyInMinutes,  servings,
 			 spoonacularScore,  title,  vegan,  vegetarian);
             
-            recipes.add(recipe);
+            recipeRepo.getAllRecipes().add(recipe);
             
 		    System.out.println(title);
 		}
@@ -92,8 +84,16 @@ public class RecipeService {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Total no of recipes from the file : "+recipes.size());
-		return recipes;
+		System.out.println("Total no of recipes from the file : "+recipeRepo.getAllRecipes().size());
+		return recipeRepo.getAllRecipes();
+	}
+	
+	public List<Recipe> getAllRecipes(){
+		
+		if(recipeRepo.getAllRecipes().size() == 0) {
+			return ingestRecipesFile();
+		}
+		return recipeRepo.getAllRecipes();
 	}
 	
 }
